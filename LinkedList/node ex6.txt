@@ -1,0 +1,22 @@
+void printReverse(Node* head, int k)
+{
+    Node* temp = head;
+    if(k < 1) return;
+    
+    Node* new_ll_head = nullptr;
+    while(k-- && temp != nullptr)
+    {
+        Node* new_node = new Node();
+        new_node->value = temp->value;
+        new_node->next = new_ll_head;
+        new_ll_head = new_node;
+        temp = temp->next;
+    }
+    
+    Node* temp2 = new_ll_head;
+    while(temp2 != nullptr)
+    {
+        cout<<temp2->value<<" ";
+        temp2 = temp2->next;
+    }
+}

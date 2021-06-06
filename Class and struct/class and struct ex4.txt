@@ -1,0 +1,27 @@
+struct Time {
+    int h;
+    int m;
+    int s;
+    Time(int H = 0, int M = 0, int S = 0) : h(H), m(M), s(S) {}
+
+    int second() {
+        return h*3600 + m*60 + s;
+    }
+    
+    void print() {
+        if(h < 10) cout<<"0";
+        cout<<h<<":";
+        if(m < 10) cout<<"0";
+        cout<<m<<":";
+        if(s < 10) cout<<"0";
+        cout<<s<<endl;
+    }
+};
+
+Time normalize(int h, int m, int s) {
+    int total_second = h*3600 + m*60 + s;
+    h = total_second/3600;
+    m = (total_second%3600)/60;
+    s = total_second%60;
+    return Time(h,m,s);
+}

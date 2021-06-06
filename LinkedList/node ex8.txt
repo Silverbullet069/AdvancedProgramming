@@ -1,0 +1,36 @@
+Node* sort(Node* head)
+{
+    if(head == nullptr) return head;
+
+    Node* i = head->next; // i = 1
+    while(i != nullptr)
+    {
+        Node* j = i->prev; // j = i - 1
+        Node t = *i; // t = a[i] = a[j+1]
+        while(j != nullptr && t.getValue() < j->getValue()) // j >= 0 && t = a[i] < a[j]
+        {
+            Node* real_next = j->next->next;
+            Node* real_prev = j->next->prev;
+            *(j->next) = *j; // a[j+1] = a[j]
+            // Luu y' : chi? can^` value nhung~ buoc nay` loi^ ca? next va` prev cua? j vao`
+            j->next->next = real_next; //thay next tuong ung'
+            j->next->prev = real_prev; //thay prev tuong ung
+
+            j = j->prev; //j--
+        }
+        if(j == nullptr) // gia? su? j = -1 => j = nullptr => j next = head
+        {
+            j = new Node();
+            j->next = head;
+        }
+
+        Node* real_next = j->next->next;
+        Node* real_prev = j->next->prev;
+        *(j->next) = t; //a[j+1] = t
+        j->next->next = real_next;
+        j->next->prev = real_prev;
+        
+        i = i->next; //i++
+    }
+    return head;
+}

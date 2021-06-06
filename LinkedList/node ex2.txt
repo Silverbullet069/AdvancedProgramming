@@ -1,0 +1,64 @@
+Node* insert(Node* head, int value)
+{
+    Node* temp = head;
+    int node_count = 0;
+    if(temp == nullptr) //ll co 0 phan^` tu?
+    {
+        temp = new Node();
+        temp->value = value;
+        head = temp;
+    }
+    else if (temp != nullptr && temp->next == nullptr)
+    {
+        if(value >= temp->value)
+        {
+            temp->next = new Node();
+            temp->next->value = value;
+        }
+        else
+        {
+            Node* new_head = new Node();
+            new_head->next = temp;
+            new_head->value = value;
+            head = new_head;
+        }
+    }
+    else
+    {
+        while(temp != nullptr)
+        {
+            static int sort_order = temp->next->value - temp->value;
+            if(node_count == 0 && ( (value <= temp->value && sort_order > 0)
+                                  ||(value >= temp->value && sort_order < 0)  ))
+            {
+                Node* new_head = new Node();
+                new_head->next = temp;
+                new_head->value = value;
+                head = new_head;
+                break;
+            }
+            else if(temp->next == nullptr && ( (value >= temp->value && sort_order > 0)
+                                             ||(value <= temp->value && sort_order < 0)  ))
+            {
+                temp->next = new Node();
+                temp->next->value = value;
+                break;
+            }
+            else
+            {
+                if( (temp->value <= value && value <= temp->next->value)
+                 || (temp->value >= value && value >= temp->next->value) )
+                {
+                    Node* new_node = new Node();
+                    new_node->next = temp->next;
+                    new_node->value = value;
+                    temp->next = new_node;
+                    break;
+                }
+            }
+            temp = temp->next;
+            node_count++;
+        }
+    }
+    return head;
+}

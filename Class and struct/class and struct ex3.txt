@@ -1,0 +1,51 @@
+#include <math.h>
+
+struct Complex {
+    int a;
+    int b;
+    Complex(int A = 0, int B = 0) : a(A), b(B) {}
+
+    double abs() {
+        return sqrt(pow(a,2) + pow(b,2));
+    }
+    
+    void print() {
+        bool no_print_a = false;
+        bool no_print_b = false;
+        bool no_print_i = false;
+        if(b == 1 || b == -1 || b == 0)
+            no_print_b = true;
+        if(a == 0)
+            no_print_a = true;
+        if(b == 0)
+            no_print_i = true;
+            
+        if(!no_print_a) cout<<a;
+        
+        if(b > 0) cout<<"+";
+        if(b < 0) cout<<"-";
+        
+        if(!no_print_b)
+        {
+            if(b < 0) cout<<-b;
+            else cout<<b;
+        }
+        
+        if(no_print_a && no_print_b)
+            cout<<"0";
+        
+        if(!no_print_i) cout<<"i"<<endl;
+        else cout<<endl;
+        
+        
+    }
+    Complex operator+(Complex c2) 
+    { 
+        return Complex(a + c2.a, b + c2.b);
+    }
+    
+};
+
+Complex add(Complex a, Complex b) {
+    return a + b;
+}

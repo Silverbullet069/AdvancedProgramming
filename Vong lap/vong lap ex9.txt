@@ -1,0 +1,56 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+bool IsPalindrome(const int& n)
+{
+    int tmp_n = n;
+    vector<int> each_digit;
+
+    while(tmp_n > 0)
+    {
+        each_digit.push_back(tmp_n%10);
+        tmp_n /= 10;
+    }
+    int total_digit = each_digit.size();
+    
+    for(int i = 0 ; i < total_digit / 2 ; ++i)
+    {
+        if(each_digit[i] != each_digit[total_digit - i - 1])
+        {
+            each_digit.clear();
+            return false;
+        }
+    }
+    each_digit.clear();
+    return true;
+}
+
+void FindTotalPalindrome()
+{
+    int t; cin>>t;
+    int a, b;
+    vector<int> ans;
+    
+    for(int i = 0 ; i < t ; ++i)
+    {
+        int total_palr = 0;
+        cin>>a>>b;
+        for(int i = a ; i <= b; ++i)
+        {
+            if(IsPalindrome(i)) total_palr++;
+        }
+        ans.push_back(total_palr);
+    }
+    
+    for(int i = 0 ; i < ans.size() ; ++i)
+        cout<<ans[i]<<endl;
+    ans.clear();
+}
+
+int main()
+{
+    FindTotalPalindrome();
+    return 0;
+}

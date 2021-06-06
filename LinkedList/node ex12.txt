@@ -1,0 +1,25 @@
+#include <map>
+
+Node* deleteDuplicates(Node* head)
+{
+    if(head == nullptr) return head;
+    
+    Node* temp = head;
+    map<int, int> node_freq;
+    node_freq[head->value]++; //Luu head vao` trong map
+    while(temp->next != nullptr)
+    {
+        if(node_freq[temp->next->value] == 0)
+            node_freq[temp->next->value]++;
+        else
+        {
+            Node* target_node = temp->next;
+            temp->next = target_node->next;
+            delete target_node;
+    	    target_node = nullptr;
+            continue;
+        }
+        temp = temp->next;
+    }
+    return head;
+}

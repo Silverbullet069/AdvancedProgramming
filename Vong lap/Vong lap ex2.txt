@@ -1,0 +1,60 @@
+#include <iostream>
+
+using namespace std;
+
+void Print(const int& m, const int& n)
+{
+    int k = 1;
+    int p = 0;
+    int row = m;
+    int col = n;
+    int a[m][n];
+    int i, j;
+    
+    while(k <= m*n)
+    {
+        //Remember : the outer can be a rectangle, or a line
+        //The order must be : fi row => last col => last row => fi col
+        //If it's a line, the fi row become the last row, the fi col become the last col, so be careful
+        
+        //Access the first row of the outer
+        for(i = p; i < col ; ++i)
+            a[p][i] = k++;
+            
+        //Access the last column of the outer
+        for(i = p + 1 ; i < row ; ++i)
+            a[i][col-1] = k++;
+            
+        //Access the last row of the outer
+        if(p != row - 1)
+            for(i = col - 2 ; i >= p ; --i)
+                a[row-1][i] = k++;
+            
+        //Access the first column of the outer
+        if(p != col - 1)
+            for(i = row - 2 ; i > p ; --i) // Remember, it's >, not >=
+                a[i][p] = k++;
+        
+        //Get inside
+        p++;
+        row--;
+        col--;
+    }
+    
+    for(i = 0 ; i < m ; ++i)
+    {
+        for(j = 0 ; j < n ; ++j) 
+        {
+            cout<<a[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+int main()
+{
+    int m, n;
+    cin>>m>>n;
+    Print(m,n);
+    return 0;
+}

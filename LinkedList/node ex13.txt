@@ -1,0 +1,28 @@
+Node* deleteNode(Node* head, int pos)
+{
+    if(head == nullptr) 
+        return head;
+        
+    if(pos == 0)
+    {
+        Node* new_head = head->next;
+        delete head;
+        head = nullptr;
+        
+        return new_head;
+    }
+    
+    int node_count = 0;
+    Node* temp = head;
+    while(temp->next != nullptr && node_count < pos - 1)
+    {
+        node_count++;
+        temp = temp->next;
+    }
+    Node* target_node = temp->next;
+    temp->next = target_node->next;
+    delete target_node;
+    target_node = nullptr;
+    
+    return head;
+}

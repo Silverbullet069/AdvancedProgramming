@@ -1,0 +1,38 @@
+    Node* convert(Node* head)
+    {
+        int size_ll = 0;
+        Node* temp_size = head;
+        if(head == nullptr)
+            return head;
+
+        //Find the size of the linkedlist
+        while(temp_size != nullptr)
+        {
+            size_ll++;
+            temp_size = temp_size->next;
+        }
+
+        //Find the node of the first array b.i
+        Node* temp_a = head;
+        Node* temp_b = head;
+        for(int i = 0 ; i < size_ll/2 ; ++i)
+        {
+            temp_b = temp_b->next;
+        }
+
+        Node* next_a = temp_a->next;
+        Node* next_b = temp_b->next;
+        for(int i = 0 ; i < size_ll/2 ; ++i)
+        {
+            temp_a->next = temp_b;
+            if(temp_b->next != nullptr)
+            {
+                temp_b->next = next_a;
+                temp_a = next_a;
+                temp_b = next_b;
+                next_a = temp_a->next;
+                next_b = temp_b->next;
+            }
+        }
+        return head;
+    }

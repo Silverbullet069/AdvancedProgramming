@@ -1,0 +1,73 @@
+#include <iostream>
+#include <iomanip>
+#include <vector>
+
+using namespace std;
+
+void PrintTemplateOne(const int& n)
+{
+    cout<<"Tong so mon hoc can tinh DTB: "<<n<<"\n";
+}
+
+bool IsValid(const float& mark, const float& factor)
+{
+    if(mark < 0 || mark > 10) 
+    {
+        cout<<"Sai diem so";
+        return false;
+    }
+    else if(!(factor == 1 || factor == 1.5 || factor == 2 || factor == 2.5 || factor == 3))
+    {
+        cout<<"Sai he so";
+        return false;
+    }
+    return true;
+}
+
+int PrintTemplateTwo(const int& index, const float& mark, const float& factor)
+{
+    cout<<"Diem mon hoc "<<index<<": "<<mark<<"\n"
+        <<"He so mon hoc "<<index<<": "<<factor<<"\n";
+}
+
+void PrintTemplateThree(const int& n, const float& sum_factor, const float& gpa)
+{
+    cout<<"Tong so he so: "<<sum_factor<<"\n"
+        <<"Diem trung binh cua "<<n<<" mon hoc: "<<gpa<<endl;
+}
+
+int main()
+{
+    vector<pair<float, float>> list_mark;
+    float sum_factor = 0.f;
+    float gpa = 0.f;
+    float mark, factor;
+    
+    //Input
+    int n; cin>>n;
+    for(int i = 0 ; i < n ; ++i)
+    {
+        cin>>mark>>factor;
+        
+        if(!IsValid(mark, factor)) 
+            return 0;
+            
+        list_mark.push_back(make_pair(mark, factor));
+    }
+    
+    //Output
+    PrintTemplateOne(n);
+    cout<<fixed<<setprecision(1);
+    for(int i = 0 ; i < n ; ++i)
+    {
+        mark = list_mark[i].first;
+        factor = list_mark[i].second;
+        sum_factor += factor;
+        gpa += mark*factor;
+        PrintTemplateTwo(i, list_mark[i].first, list_mark[i].second);
+    }
+    gpa /= sum_factor;
+    PrintTemplateThree(n, sum_factor, gpa);
+
+    return 0;
+}

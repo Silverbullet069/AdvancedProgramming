@@ -1,0 +1,48 @@
+void rotate(Node* head, int k)
+{
+    if(head == nullptr || k < 1) return;
+
+    Node* temp_count_ll = head;
+    int size_ll = 0;
+    while(temp_count_ll != nullptr)
+    {
+        size_ll++;
+        temp_count_ll = temp_count_ll->next;
+    }
+
+    int node_count = 0;
+    Node* temp = head;
+    while(temp->next != nullptr && node_count < size_ll - k)
+    {
+        node_count++;
+        temp = temp->next;
+    }
+
+    int fir_node_value = head->value;
+    Node* fir_node = head;
+
+    //new_head la` head cua? ll luu tru~
+    Node* new_head = new Node();
+    Node* temp2 = new_head;
+    for(int i = 0; i < size_ll ; ++i)
+    {
+        if(i == size_ll - k)
+        {
+            fir_node = new_head; //chuyen? sang ll luu tru? cac' value bi. de`
+        }
+
+        temp2->value = temp->value;
+        temp2->next = new Node();
+        temp2 = temp2->next;
+        if(temp2 == nullptr)
+            temp2 = head;
+
+        temp->value = fir_node->value;
+        temp = temp->next;
+        if(temp == nullptr)
+            temp = head;
+
+        //Chuyen? fir_node len^ 1 bac^.
+        fir_node = fir_node->next;
+    }
+}

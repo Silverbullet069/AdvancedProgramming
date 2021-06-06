@@ -1,0 +1,46 @@
+Node* deleteSingle(Node* head)
+{
+    if(head == nullptr) return head;
+    if(head != nullptr && head->next == nullptr)
+    {
+        delete head;
+	head = nullptr
+        return head;
+    }
+
+    Node* temp = head; //i = 0
+    while(temp->next->next != nullptr)
+    {
+        if(temp->value != temp->next->value
+           && temp->next->value != temp->next->next->value) //...2 2 3 4 4...
+        {
+            Node* target_node = temp->next;
+            temp->next = target_node->next;
+            delete target_node;
+	    target_node = nullptr;
+            break;
+        }
+        else if(temp == head
+                && temp->value != temp->next->value
+                && temp->next->value == temp->next->next->value) //1 2 2...
+        {
+            Node* target_node = temp;
+            head = target_node->next;
+            delete target_node;
+	    target_node = nullptr;
+            break;
+        }
+        else if(temp->value == temp->next->value
+                && temp->next->value != temp->next->next->value
+                && temp->next->next->next == nullptr)  //... 3 3 4
+        {
+            Node* target_node = temp->next->next;
+            temp->next->next = target_node->next;
+            delete target_node;
+	    target_node = nullptr;
+            break;
+        }
+        temp = temp->next;
+    }
+    return head;
+}

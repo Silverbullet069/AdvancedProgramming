@@ -1,0 +1,44 @@
+#include <iostream>
+#include <map>
+#include <limits.h>
+
+using namespace std;
+
+int MaxBirdFreq()
+{
+    int n; cin>>n;
+    int arr[n];
+    map<int, int> bird_freq; //fi : ID, se : freq
+    map<int, int>::iterator it;
+    
+    for(int i = 0 ; i < n ; ++i)
+    {
+        cin>>arr[i];
+        bird_freq[arr[i]]++;
+    }
+    
+    int max_freq = INT_MIN;
+    int min_id = INT_MAX;
+    for(it = bird_freq.begin() ; it != bird_freq.end() ; ++it)
+    {
+        if(it->second == max_freq)
+        {
+            if(it->first < min_id)
+                min_id = it->first;
+        }
+        
+        if(it->second > max_freq)
+        {
+            max_freq = it->second;
+            min_id = it->first;
+        }
+    }
+    
+    return min_id;
+}
+
+int main()
+{
+    cout<<MaxBirdFreq();
+    return 0;
+}

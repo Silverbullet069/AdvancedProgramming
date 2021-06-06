@@ -1,0 +1,160 @@
+#include <iostream>
+#include <tuple>
+#include <vector>
+#include <iomanip>
+
+using namespace std;
+
+//ID, Math, Phy, Eng, GPA
+// 0 1 2 3 4
+using Mark = tuple<int, float, float, float, float>;
+const int MATH_INDEX = 1;
+const int ENG_INDEX = 3;
+const int GPA_INDEX = 4;
+int TOTAL_TABLE = 3;
+
+int n;
+vector<Mark> list_mark;
+bool invalid_flag = false;
+
+void Input()
+{
+    cin>>n;
+    float math = 0.f;
+    float phy = 0.f;
+    float eng = 0.f;
+    
+    for(int i = 0 ; i < n ; ++i)
+    {
+        cin>>math>>phy>>eng;
+        if(math < 0 || math > 10 || phy < 0 || phy > 10 || eng < 0 || eng > 10.0)
+            invalid_flag = true;
+        list_mark.push_back(make_tuple(i+1, math, phy, eng, (math + phy + eng)/3));
+    }
+}
+
+void PrintTemplete(const int& table_index)
+{
+    switch(table_index)
+    {
+        case 0 : //Math
+        {
+            cout<<"Theo diem mon Toan:\n"
+                <<"SV Toan Ly Anh\n";
+        }
+        break;
+        
+        case 1: //Eng
+        {
+            cout<<"Theo diem mon Anh:\n"
+                <<"SV Toan Ly Anh\n";
+        }
+        break;
+        
+        case 2: // GPA
+        {
+            cout<<"Theo diem trung binh:\n"
+                <<"SV TB Toan Ly Anh\n";
+        }
+        break;
+    }
+}
+
+
+void SortEachTable(const int& table_index)
+{
+    switch(table_index)
+    {
+        case 0 :
+        {
+            for(int i = 0 ; i < n - 1; ++i)
+            {
+                for(int j = i + 1 ; j < n ; ++j)
+                {
+                    if( get<MATH_INDEX>(list_mark[i]) < get<MATH_INDEX>(list_mark[j]) )
+                    {
+                        Mark tmp = list_mark[i];
+                        list_mark[i] = list_mark[j];
+                        list_mark[j] = tmp;
+                    }
+                }
+            }
+        }
+        break;
+        
+        case 1 :
+        {
+            for(int i = 0 ; i < n - 1; ++i)
+            {
+                for(int j = i + 1 ; j < n ; ++j)
+                {
+                    if( get<ENG_INDEX>(list_mark[i]) < get<ENG_INDEX>(list_mark[j]) )
+                    {
+                        Mark tmp = list_mark[i];
+                        list_mark[i] = list_mark[j];
+                        list_mark[j] = tmp;
+                    }
+                }
+            }
+        }
+        break;
+        
+        case 2 :
+        {
+            for(int i = 0 ; i < n - 1; ++i)
+            {
+                for(int j = i + 1 ; j < n ; ++j)
+                {
+                    if( get<GPA_INDEX>(list_mark[i]) < get<GPA_INDEX>(list_mark[j]) )
+                    {
+                        Mark tmp = list_mark[i];
+                        list_mark[i] = list_mark[j];
+                        list_mark[j] = tmp;
+                    }
+                }
+            }
+        }
+        break;
+    }
+    
+    
+}
+
+void PrintEachTable(const int& table_index)
+{
+    for(int i = 0 ; i < n ; ++i)
+    {
+        cout<<fixed<<setprecision(1);
+        
+        cout<<get<0>(list_mark[i])<<" ";
+        if(table_index == TOTAL_TABLE - 1) //GPA
+            cout<<get<4>(list_mark[i])<<" ";
+        cout<<get<1>(list_mark[i])<<" "
+            <<get<2>(list_mark[i])<<" "
+            <<get<3>(list_mark[i])<<endl;
+    }
+    cout<<endl;
+}
+
+void Output()
+{
+    if(invalid_flag == true) 
+    {
+        cout<<"invalid";
+        return;
+    }
+    
+    for(int i = 0 ; i < TOTAL_TABLE ; ++i)
+    {
+        PrintTemplete(i);
+        SortEachTable(i);
+        PrintEachTable(i);
+    }
+}
+
+int main()
+{
+    Input();
+    Output();
+    return 0;
+}

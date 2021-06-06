@@ -1,0 +1,54 @@
+#include <iostream>
+
+using namespace std;
+
+void GenerateMagicSquare(const int& n)
+{
+    int mg_square[n][n];
+    
+    for(int i = 0 ; i < n ; ++i)
+        for(int j = 0 ; j < n ; ++j)
+            mg_square[i][j] = 0;
+            
+    int k = 1;
+    int row = 0; //first row
+    int col = (n-1)/2; //first col
+    mg_square[row][col] = k;
+    k++;
+    
+    while(k <= n*n)
+    {
+        //Di chuyen? huong' dong^ bac'
+        row = (row - 1 >= 0)? row - 1 : n - 1;
+        col = (col + 1 < n)? col + 1 : 0;
+        
+        if(mg_square[row][col] != 0) //Neu^' nhu o? tiep' theo da~ co' so^''
+        {
+            //Dich. xuong^' 2 hang` (2 buoc la` vi` tinh' theo o^ tiep' theo, kp
+            // o^ truoc' day^''
+            row = (row + 1 < n)? row + 1 : 0;
+            row = (row + 1 < n)? row + 1 : 0; 
+            
+            //Dich. tro? lai. trai' 1 cot^.
+            col = (col - 1 >= 0)? col - 1 : n - 1;
+        }
+        
+        mg_square[row][col] = k++;
+    }
+    
+    for(int i = 0 ; i < n ; ++i)
+    {
+        for(int j = 0 ; j < n ; ++j)
+        {
+            cout<<mg_square[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}
+
+int main()
+{
+    int n; cin>>n;
+    GenerateMagicSquare(n);
+    return 0;
+}

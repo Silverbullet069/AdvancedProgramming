@@ -1,0 +1,56 @@
+#include <iostream>
+#include <iomanip>
+#include <math.h>
+
+using namespace std;
+
+void SolveEquation(const float& a, const float& b, const float& c)
+{
+    cout<<fixed<<setprecision(2);
+    if(a == 0)
+    {
+        if(b == 0)
+        {
+            if(c == 0) cout<<"0";
+            else return;
+        }
+        else
+        {
+            float x = (-c)/b;
+            cout<<x;
+        }
+    }
+    else
+    {
+        float delta = b*b - 4*a*c;
+        if(delta == 0)
+        {
+            float x = (-b)/(2*a);
+            cout<<x;
+        }
+        else if(delta > 0)
+        {
+            float x1 = ((-b) - sqrt(delta))/(2*a);
+            float x2 = ((-b) + sqrt(delta))/(2*a);
+            cout<<x1<<"\n"<<x2;
+        }
+        else //delta < 0
+        {
+            delta *= (-1);
+            float real_x1 = (-b)/(2*a);
+            float real_x2 = real_x1;
+            float img_x1 = (-sqrt(delta))/(2*a);
+            float img_x2 = sqrt(delta)/(2*a);
+            cout<<real_x1<<" "<<img_x1<<"\n"
+                <<real_x2<<" "<<img_x2;
+        }
+    }
+}
+
+int main()
+{
+    float a, b, c;
+    cin>>a>>b>>c;
+    SolveEquation(a, b, c);
+    return 0;
+}
