@@ -1,3 +1,3 @@
 # AdvancedProgramming
 
-Kho code mình tự viết share cho các bạn UET K65-C-CLC
+Kho code mình tự viết share cho các bạn UET K65
