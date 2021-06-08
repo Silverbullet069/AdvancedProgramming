@@ -1,0 +1,94 @@
+#include <iostream>
+
+using namespace std;
+
+int BinarySearch(int arr[], int l, int r, const int& k)
+{
+    if(r >= l)
+    {
+        int mid = l + (r - l)/2;
+        
+        if(arr[mid] == k)
+            return mid;
+        else if(arr[mid] > k)
+            return BinarySearch(arr, l, mid - 1, k);
+        else
+            return BinarySearch(arr, mid + 1, r, k);
+    }
+    
+    return -1;
+}
+
+int Ascending(const void* a, const void* b)
+{
+    return ( *(int*)a - *(int*)b );
+}
+
+int main()
+{
+    //Input
+    int n; cin>>n;
+    int arr[n];
+    for(int i = 0 ; i < n ; ++i)
+        cin>>arr[i];
+    
+    //Update
+    qsort(arr, n, sizeof(arr[0]), Ascending);
+    
+    /**
+    //Test output
+    for(int i = 0 ; i < n ; ++i)
+        cout<<arr[i]<<" ";
+    cout<<"\n";
+    **/
+    
+    int i = 0;
+    while(i < n && arr[i] < 0)
+    {
+        //Check xem co' so^' doi^' xung' voi' so^' dang xet'
+        int pos_index = BinarySearch(arr, i + 1, n - 1, (-1)*arr[i]);
+        if(pos_index == -1)
+        {
+            i++; 
+            continue;
+        }
+
+        int neg = arr[i];
+        int count_neg = 1;
+        int count_pos = 1;
+        int pos_left = pos_index - 1;
+        int pos_right = pos_index + 1;
+        
+        while(neg == arr[++i])
+        {
+            count_neg++;
+        }
+        i--;
+        
+        while(pos_left >= 0)
+        {
+            if(arr[pos_left] == arr[pos_index])
+            {
+                count_pos++;
+                pos_left--;
+            }
+            else break;
+        }
+        
+        while(pos_right < n)
+        {
+            if(arr[pos_right] == arr[pos_index])
+            {
+                count_pos++;
+                pos_right++;
+            }
+            else break;
+        }
+        
+        for(int k = 0 ; k < (count_pos*count_neg) ; ++k)
+            cout<<neg<<" "<<arr[pos_index]<<"\n";
+            
+        i++;
+    }
+    return 0;
+}

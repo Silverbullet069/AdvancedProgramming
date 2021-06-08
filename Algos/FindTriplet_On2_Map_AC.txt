@@ -1,0 +1,133 @@
+#include <iostream>
+#include <map>
+
+using namespace std;
+
+void FindTriplet(const map<int, int>& freq_map)
+{
+    int size = freq_map.size();
+    
+    if(size == 0) 
+        return;
+    else if(size == 1)
+    {
+        auto it = freq_map.begin();
+        if(it->first == 0 && it->second >= 3)
+            cout<<"0 0 0";
+    }
+    else if(size == 2)
+    {
+        auto it1 = freq_map.begin();
+        auto it2 = prev(freq_map.end(), 1);
+
+        if(it1->first < 0 && it2->first > 0)
+        {
+            int mod = it2->first%it1->first;
+            int divide = it2->first/it1->first;
+            divide = (divide < 0)? divide*(-1) : divide;
+        
+            if(mod == 0 && it1->second >= divide)
+                cout<<it1->first<<" "<<it1->first<<" "<<it2->first;
+        }
+        else if(it1->first == 0 || it2->first == 0)
+        {
+            if((it1->first == 0 && it1->second >= 3) 
+             ||(it2->first == 0 && it2->second >= 3))
+                cout<<"0 0 0";
+        }
+    }
+    else
+    {
+    for(auto it = freq_map.begin() ; it != freq_map.end() ; ++it) //prev(freq_map.end(), 2)
+    {
+        if(it->first == 0 && it->second >= 3) // 3 number 0
+        {
+            cout<<"0 0 0"; 
+            return;
+        }
+        
+        auto it_l = it; //it + 1
+        auto it_r = prev(freq_map.end(), 1);
+        
+        while(it_l != it_r && next(it_r, 1) != it_l) //i < j
+        {
+            int sum = it->first + it_l->first + it_r->first;
+            
+            if(sum == 0)
+            {
+                if(it == it_l) //2 neg 1 pos
+                {
+                    if(it_l->second >= 2)
+                    {
+                        cout<<it->first<<" "
+                            <<it_l->first<<" "
+                            <<it_r->first<<"\n";
+                        it_l++;
+                    }
+                    else
+                    {
+                        it_l++;
+                    }
+                    
+                    if(it_l == it_r && it_l->second >= 2) //1 neg 2 pos
+                    {
+                        cout<<it->first<<" "
+                            <<it_l->first<<" "
+                            <<it_r->first<<"\n";
+                        break;
+                    }
+                }
+                else // 3 distinct number
+                {
+                    cout<<it->first<<" "
+                        <<it_l->first<<" "
+                        <<it_r->first<<"\n";
+                    it_l++;
+                    it_r--;
+                    
+                    if(it_l == it_r && it_l->second >= 2) //1 neg 2 pos
+                    {
+                        cout<<it->first<<" "
+                            <<it_l->first<<" "
+                            <<it_r->first<<"\n";
+                        break;
+                    }
+                }
+            }
+            else if(sum < 0)
+            {
+                it_l++;
+            }
+            else //sum > 0
+            {
+                it_r--;
+            }
+        }
+    }
+    }
+}
+
+int Ascending(const void* a, const void* b)
+{
+	return ( *(int*)a - *(int*)b );
+}
+
+int main()
+{
+    //Input
+    int n; cin>>n;
+    int arr[n];
+    map<int, int> freq_map; // A map contains the frequency of the given array
+    for(int i = 0 ; i < n ; ++i)
+        cin>>arr[i];
+        
+    //Output
+    qsort(arr, n, sizeof(arr[0]), Ascending);
+    for(int i = 0 ; i < n ; ++i)
+        freq_map[arr[i]]++;
+    //Instead of sorting the array, you can sort the map by key value, much faster for big n
+    
+    FindTriplet(freq_map);
+    
+    return 0;
+}

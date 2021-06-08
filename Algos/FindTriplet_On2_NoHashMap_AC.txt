@@ -1,0 +1,149 @@
+#include <iostream>
+#include <vector>
+#include <map>
+
+using namespace std;
+
+//Divide and conquer
+int BinarySearch(const vector<int>& arr, int l, int r, const int& k)
+{
+    if(r >= l)
+    {
+        int mid = l + (r - l)/2;
+        
+        if(arr[mid] == k)
+            return mid;
+        else if(arr[mid] > k)
+            return BinarySearch(arr, l, mid - 1, k);
+        else
+            return BinarySearch(arr, mid + 1, r, k);
+    }
+    
+    return -1;
+}
+
+//Two Pointer Technique
+void FindTriplet(const vector<int>& dist_arr, const vector<int>& freq)
+{
+    for(int i = 0 ; i < dist_arr.size() - 2 ; ++i)
+    {
+        if(dist_arr[i] == 0) // 3 number 0
+        {
+            int index = BinarySearch(freq, 0, freq.size() - 1, 0);
+            if(index == -1) //not found (so there is only one zero in original array)
+                break;
+            else //found
+            {
+                if(freq.size() > 1) //size >= 2
+                {
+                    if(index == 0) //[0]
+                    {
+                        if(freq[index+1] == 0) 
+                        {
+                            cout<<"0 0 0"; return;
+                        }
+                        else return;
+                    }
+                    else if(index == freq.size() - 1) // [n - 1]
+                    {
+                        if(freq[index - 1] == 0)
+                        {
+                            cout<<"0 0 0"; return;
+                        }
+                        else return;
+                    }
+                    else //[1 ... n-2]
+                    {
+                        if(freq[index - 1] == 0 || freq[index + 1] == 0)
+                        {
+                            cout<<"0 0 0"; return;
+                        }
+                        else return;
+                    }
+                }
+                else return; //size = 0 or = 1
+            }
+        }
+        
+        int l = i; // 2 neg 1 pos (else : l = i + 1)
+        int r = dist_arr.size() - 1;
+        
+        while(l <= r) // 2 pos 1 neg (else : l < r)
+        {
+            int sum = dist_arr[i] + dist_arr[l] + dist_arr[r];
+            if(sum == 0)
+            {
+                if(i == l) //2 neg 1 pos
+                {
+                    if(BinarySearch(freq, 0, freq.size() - 1, dist_arr[l]) != -1)
+                    {
+                        cout<<dist_arr[i]<<" "<<dist_arr[l]<<" "<<dist_arr[r]<<"\n";
+                        l++;
+                    }
+                    else
+                    {
+                        l++;
+                    }
+                }
+                else if(l == r) //1 neg 2 pos
+                {
+                    if(BinarySearch(freq, 0, freq.size() - 1, dist_arr[l]) != -1)
+                    {
+                        cout<<dist_arr[i]<<" "<<dist_arr[l]<<" "<<dist_arr[r]<<"\n";
+                        break;
+                    }
+                    else 
+                    {
+                        break;
+                    }
+                }
+                else // 3 distinct number
+                {
+                    cout<<dist_arr[i]<<" "<<dist_arr[l]<<" "<<dist_arr[r]<<"\n";
+                    l++;
+                    r--;
+                }
+            }
+            else if(sum < 0)
+            {
+                l++;
+            }
+            else //sum > 0
+            {
+                r--;
+            }
+        }
+    }
+}
+
+int Ascending(const void* a, const void* b)
+{
+	return ( *(int*)a - *(int*)b );
+}
+
+int main()
+{
+    //Input
+    int n; cin>>n;
+    int arr[n];
+    vector<int> dist_arr; // An array contains all the distinct elements of the original array
+    vector<int> freq; // An array contains all the elements which have frequency >= 2.
+    for(int i = 0 ; i < n ; ++i)
+        cin>>arr[i];
+        
+    //Update
+    qsort(arr, n, sizeof(arr[0]), Ascending);
+    dist_arr.push_back(arr[0]);
+    for(int i = 1 ; i < n ; ++i)
+    {
+        if(arr[i - 1] == arr[i] && arr[i] == dist_arr[dist_arr.size() - 1])
+            freq.push_back(arr[i]);
+        else
+            dist_arr.push_back(arr[i]);
+    }
+    
+    //Output 
+    FindTriplet(dist_arr, freq);
+    
+    return 0;
+}
